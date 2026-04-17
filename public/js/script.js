@@ -29,6 +29,9 @@ function syncMetrics() {
     // Sync todo list display
     syncTodoList(todos);
 
+    // Sync upcoming events in the homepage
+    syncUpcomingEvents();
+
     // Sync alerts bar
     syncAlertsBar();
 
@@ -97,7 +100,12 @@ function syncAlertsBar() {
 // Sync upcoming events in the homepage
 function syncUpcomingEvents() {
     const events = JSON.parse(localStorage.getItem('saenco-events') || '[]');
-    const deadlinesContainer = document.querySelector('.card .card-body');
+    const upcomingCard = Array.from(document.querySelectorAll('.card')).find(card =>
+        card.querySelector('.card-title')?.textContent === 'A breve'
+    );
+    if (!upcomingCard) return;
+
+    const deadlinesContainer = upcomingCard.querySelector('.card-body');
     if (!deadlinesContainer) return;
 
     // Clear existing deadline rows (keep the header)

@@ -188,10 +188,5 @@ document.getElementById('delete-event').addEventListener('click', () => {
     modal.style.display = 'none';
 });
 
-// Edit event (placeholder)
-document.getElementById('edit-event').addEventListener('click', () => {
-    alert('Funzionalità di modifica non implementata');
-});
-
 // Initialize calendar
 renderCalendar();

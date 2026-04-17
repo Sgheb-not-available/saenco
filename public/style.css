@@ -27,10 +27,12 @@
 
   html { font-size: 15px; }
   body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
     font-family: var(--sans);
     background: var(--bg);
     color: var(--text-primary);
-    min-height: 100vh;
   }
 
   /* TOP BAR */
@@ -219,7 +221,7 @@
   }
 
   /* MAIN GRID */
-  .main { padding: 2rem 2.5rem; }
+  .main { flex: 1; padding: 2rem 2.5rem; }
   .grid-2col {
     display: grid;
     grid-template-columns: 1fr 340px;

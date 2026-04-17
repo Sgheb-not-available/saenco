@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saenco — Contatti</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,300&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="topbar">
+        <div class="topbar-left">
+            <span><span class="topbar-dot"></span>Sistema operativo</span>
+        </div>
+        <div class="topbar-right">
+            <span id="clock" style="font-family: var(--mono); font-size: 11px; opacity: 0.8;"></span>
+        </div>
+    </div>
+
+    <header>
+        <div class="logo">
+            <span class="logo-mark">Saenco</span>
+            <div class="logo-divider"></div>
+            <span class="logo-sub">Portale Interno</span>
+        </div>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="da-fare.html">Da fare</a>
+            <a href="software.html">Software</a>
+            <a href="https://sgheb-not-available.github.io/Clienti-Padova/" target="_blank">Clienti</a>
+            <a href="documenti.html">Documenti</a>
+            <a href="calendario.html">Calendario</a>
+        </nav>
+        <div class="header-right">
+            <div class="avatar" title="Profilo utente">Tu</div>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="section-label">Contatti sviluppatore</div>
+        <div class="card" style="max-width: 560px; margin: 0 auto;">
+            <div class="card-header">
+                <span class="card-title">Riccardo Dinoi</span>
+                <span class="card-action">Sviluppatore</span>
+            </div>
+            <div class="card-body">
+                <div class="contact-row">
+                    <div class="contact-label">Telefono</div>
+                    <div class="contact-value"><a href="tel:+393500456502">+39 350 045 6502</a></div>
+                </div>
+                <div class="contact-row">
+                    <div class="contact-label">GitHub</div>
+                    <div class="contact-value"><a href="https://github.com/Sgheb-not-available" target="_blank">github.com/Sgheb-not-available</a></div>
+                </div>
+                <div class="contact-row">
+                    <div class="contact-label">Email</div>
+                    <div class="contact-value"><a href="mailto:rickyxk123@gmail.com">rickyxk123@gmail.com</a></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <span>Saenco S.r.l. &mdash; Uso interno riservato</span>
+        <span style="display: flex; gap: 1.5rem;">
+            <a href="#">Sviluppato da Riccardo Dinoi</a>
+            <span style="opacity: 0.5;">&copy; <span id="year"></span> Saenco S.r.l.</span>
+        </span>
+    </footer>
+
+    <script>
+        function pad(n) { return String(n).padStart(2, '0'); }
+        function tick() {
+            const now = new Date();
+            document.getElementById('clock').textContent = pad(now.getHours()) + ':' + pad(now.getMinutes()) + ':' + pad(now.getSeconds());
+        }
+        tick();
+        setInterval(tick, 1000);
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>
