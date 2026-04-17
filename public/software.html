@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,300&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <title>Saenco — Software</title>
+</head>
+<body style="min-height: 100vh; display: flex; flex-direction: column;">
+    <!-- TOP BAR -->
+    <div class="topbar">
+    <div class="topbar-left">
+        <span><span class="topbar-dot"></span>Sistema operativo</span>
+    </div>
+    <div class="topbar-right">
+        <span id="clock" style="font-family: var(--mono); font-size: 11px; opacity: 0.8;"></span>
+    </div>
+    </div>
+
+    <!-- HEADER -->
+    <header>
+    <div class="logo">
+        <span class="logo-mark">Saenco</span>
+        <div class="logo-divider"></div>
+        <span class="logo-sub">Portale Interno</span>
+    </div>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="da-fare.html">Da fare</a>
+        <a href="software.html" class="active">Software</a>
+        <a href="https://sgheb-not-available.github.io/Clienti-Padova/" target="_blank">Clienti</a>
+        <a href="documenti.html">Documenti</a>
+        <a href="calendario.html">Calendario</a>
+    </nav>
+    <div class="header-right">
+        <div class="avatar" title="Profilo utente">Tu</div>
+    </div>
+    </header>
+
+    <!-- MAIN -->
+    <div class="main" style="flex: 1;">
+    <div class="section-label">Software disponibili</div>
+    <div class="grid-2col">
+
+        <!-- SOFTWARE CARD 1 -->
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">Autoxls</span>
+                </div>
+                <div class="card-body">
+                <p>Software per l'automazione degli xls a partire da Blumatica DVR.</p>
+                <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                    <a href="#" class="button">Download</a>
+                    <a href="https://github.com/Sgheb-not-available/autoxls" class="button button-secondary" target="_blank">Codice</a>
+                </div>
+            </div>
+        </div>
+        </div>
+
+    </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+    <span>Saenco S.r.l. &mdash; Uso interno riservato</span>
+    <span style="display: flex; gap: 1.5rem;">
+        <a href="#">Sviluppato da Riccardo Dinoi</a>
+        <span style="opacity: 0.5;">&copy; <span id="year"></span> Saenco S.r.l.</span>
+    </span>
+    </footer>
+
+    <script>
+        function pad(n) { return String(n).padStart(2, '0'); }
+        function tick() {
+            const now = new Date();
+            document.getElementById('clock').textContent =
+            pad(now.getHours()) + ':' + pad(now.getMinutes()) + ':' + pad(now.getSeconds());
+        }
+        tick();
+        setInterval(tick, 1000);
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>

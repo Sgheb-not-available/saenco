@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saenco — Documenti</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,300&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body style="min-height: 100vh; display: flex; flex-direction: column;">
+
+    <!-- TOP BAR -->
+    <div class="topbar">
+    <div class="topbar-left">
+        <span><span class="topbar-dot"></span>Sistema operativo</span>
+    </div>
+    <div class="topbar-right">
+        <span id="clock" style="font-family: var(--mono); font-size: 11px; opacity: 0.8;"></span>
+    </div>
+    </div>
+
+    <!-- HEADER -->
+    <header>
+    <div class="logo">
+        <span class="logo-mark">Saenco</span>
+        <div class="logo-divider"></div>
+        <span class="logo-sub">Portale Interno</span>
+    </div>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="da-fare.html">Da fare</a>
+        <a href="software.html">Software</a>
+        <a href="https://sgheb-not-available.github.io/Clienti-Padova/" target="_blank">Clienti</a>
+        <a href="documenti.html" class="active">Documenti</a>
+        <a href="calendario.html">Calendario</a>
+    </nav>
+    <div class="header-right">
+        <div class="avatar" title="Profilo utente">Tu</div>
+    </div>
+    </header>
+
+    <!-- MAIN -->
+    <div class="main" style="flex: 1;">
+    <div class="section-label">Archivio documenti</div>
+
+    <!-- UPLOAD FORM -->
+    <div class="card" style="margin-bottom: 1.5rem;">
+        <div class="card-header">
+        <span class="card-title">Carica nuovo documento</span>
+        </div>
+        <div class="card-body">
+        <form id="document-form" style="display: grid; grid-template-columns: 1fr auto; gap: 1rem; align-items: end;">
+            <div>
+            <label for="document-file" style="display: block; font-size: 12px; color: var(--text-secondary); margin-bottom: 0.5rem;">Seleziona file</label>
+            <input type="file" id="document-file" accept=".pdf,.doc,.docx,.xls,.xlsx,.txt,.jpg,.jpeg,.png" required style="width: 100%; padding: 0.5rem; border: 1px solid var(--border); border-radius: var(--radius); font-size: 14px;">
+            </div>
+            <button type="submit" class="button button-upload">Carica documento</button>
+        </form>
+        </div>
+    </div>
+
+    <!-- DOCUMENTS LIST -->
+    <div class="card">
+        <div class="card-header">
+        <span class="card-title">Documenti archiviati</span>
+        </div>
+        <div class="card-body" id="documents-list">
+        <div class="document-item" style="display: grid; grid-template-columns: auto 1fr auto auto; gap: 12px; align-items: center; padding: 0.9rem 0; border-bottom: 1px solid var(--border);">
+            <div class="document-icon" style="width: 32px; height: 32px; background: var(--surface-alt); border-radius: var(--radius); display: flex; align-items: center; justify-content: center; font-size: 14px;">📄</div>
+            <div>
+            <div class="document-name" style="font-size: 14px; font-weight: 500; color: var(--text-primary);">Documento di esempio.pdf</div>
+            <div class="document-meta" style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">Caricato il 17/04/2026 • 2.3 MB</div>
+            </div>
+            <span class="badge badge-blue">PDF</span>
+            <div style="display: flex; gap: 8px;">
+                <button class="document-download" style="background: none; border: none; color: var(--accent); cursor: pointer; font-size: 12px;">↓</button>
+                <button class="document-delete" style="background: none; border: none; color: var(--red); cursor: pointer; font-size: 12px;">×</button>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+    <span>Saenco S.r.l. &mdash; Uso interno riservato</span>
+    <span style="display: flex; gap: 1.5rem;">
+        <a href="#">Sviluppato da Riccardo Dinoi</a>
+        <span style="opacity: 0.5;">&copy; <span id="year"></span> Saenco S.r.l.</span>
+    </span>
+    </footer>
+
+    <!-- CONFIRMATION MODAL -->
+    <div id="confirm-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;">
+        <div style="background: var(--surface); padding: 2rem; border-radius: var(--radius-lg); border: 1px solid var(--border); max-width: 400px; width: 90%;">
+            <h3 style="margin: 0 0 1rem 0; font-size: 18px; color: var(--text-primary);">Conferma eliminazione</h3>
+            <p style="margin: 0 0 1.5rem 0; color: var(--text-secondary);">Sei sicuro di voler eliminare questo documento? L'azione non può essere annullata.</p>
+            <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+                <button id="confirm-cancel" class="button button-secondary">Annulla</button>
+                <button id="confirm-delete" class="button" style="background: var(--red); border-color: var(--red);">Elimina</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/documenti.js"></script>
+</body>
+</html>

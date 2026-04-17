@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saenco — Da fare</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,300&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body style="min-height: 100vh; display: flex; flex-direction: column;">
+
+    <!-- TOP BAR -->
+    <div class="topbar">
+    <div class="topbar-left">
+        <span><span class="topbar-dot"></span>Sistema operativo</span>
+    </div>
+    <div class="topbar-right">
+        <span id="clock" style="font-family: var(--mono); font-size: 11px; opacity: 0.8;"></span>
+    </div>
+    </div>
+
+    <!-- HEADER -->
+    <header>
+    <div class="logo">
+        <span class="logo-mark">Saenco</span>
+        <div class="logo-divider"></div>
+        <span class="logo-sub">Portale Interno</span>
+    </div>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="da-fare.html" class="active">Da fare</a>
+        <a href="software.html">Software</a>
+        <a href="https://sgheb-not-available.github.io/Clienti-Padova/" target="_blank">Clienti</a>
+        <a href="documenti.html">Documenti</a>
+        <a href="calendario.html">Calendario</a>
+    </nav>
+    <div class="header-right">
+        <div class="avatar" title="Profilo utente">Tu</div>
+    </div>
+    </header>
+
+    <!-- MAIN -->
+    <div class="main" style="flex: 1;">
+    <div class="section-label">Gestione compiti</div>
+
+    <!-- ADD TODO FORM -->
+    <div class="card" style="margin-bottom: 1.5rem;">
+        <div class="card-header">
+        <span class="card-title">Aggiungi nuovo compito</span>
+        </div>
+        <div class="card-body">
+        <form id="todo-form" style="display: grid; grid-template-columns: 1fr 1fr auto; gap: 1rem; align-items: end;">
+            <div>
+            <label for="todo-date" style="display: block; font-size: 12px; color: var(--text-secondary); margin-bottom: 0.5rem;">Data scadenza</label>
+            <input type="date" id="todo-date" required style="width: 100%; padding: 0.5rem; border: 1px solid var(--border); border-radius: var(--radius); font-size: 14px;">
+            </div>
+            <div>
+            <label for="todo-description" style="display: block; font-size: 12px; color: var(--text-secondary); margin-bottom: 0.5rem;">Descrizione</label>
+            <input type="text" id="todo-description" placeholder="Descrivi il compito..." required style="width: 100%; padding: 0.5rem; border: 1px solid var(--border); border-radius: var(--radius); font-size: 14px;">
+            </div>
+            <div>
+            <label for="todo-priority" style="display: block; font-size: 12px; color: var(--text-secondary); margin-bottom: 0.5rem;">Priorità</label>
+            <select id="todo-priority" style="width: 100%; padding: 0.5rem; border: 1px solid var(--border); border-radius: var(--radius); font-size: 14px;">
+                <option value="bassa">Bassa</option>
+                <option value="media" selected>Media</option>
+                <option value="alta">Alta</option>
+                <option value="urgente">Urgente</option>
+            </select>
+            </div>
+            <button type="submit" class="button" style="grid-column: span 3; justify-self: start;">Aggiungi compito</button>
+        </form>
+        </div>
+    </div>
+
+    <!-- TODO LIST -->
+    <div class="card">
+        <div class="card-header">
+        <span class="card-title">Compiti da completare</span>
+        </div>
+        <div class="card-body" id="todo-list">
+        <!-- Todos will be added here dynamically -->
+        <div class="todo-item" style="display: grid; grid-template-columns: auto 1fr auto auto; gap: 12px; align-items: center; padding: 0.9rem 0; border-bottom: 1px solid var(--border);">
+            <div class="todo-date" style="width: 80px; font-family: var(--mono); font-size: 11px; color: var(--text-muted);">2026-04-20</div>
+            <div>
+            <div class="todo-description" style="font-size: 14px; font-weight: 500; color: var(--text-primary);">Completare report mensile</div>
+            </div>
+            <span class="badge badge-amber">Alta</span>
+            <button class="todo-delete" style="background: none; border: none; color: var(--red); cursor: pointer; font-size: 12px;">×</button>
+        </div>
+        <div class="todo-item" style="display: grid; grid-template-columns: auto 1fr auto auto; gap: 12px; align-items: center; padding: 0.9rem 0; border-bottom: 1px solid var(--border);">
+            <div class="todo-date" style="width: 80px; font-family: var(--mono); font-size: 11px; color: var(--text-muted);">2026-04-25</div>
+            <div>
+            <div class="todo-description" style="font-size: 14px; font-weight: 500; color: var(--text-primary);">Revisione contratto cliente</div>
+            </div>
+            <span class="badge badge-blue">Media</span>
+            <button class="todo-delete" style="background: none; border: none; color: var(--red); cursor: pointer; font-size: 12px;">×</button>
+        </div>
+        <div class="todo-item" style="display: grid; grid-template-columns: auto 1fr auto auto; gap: 12px; align-items: center; padding: 0.9rem 0;">
+            <div class="todo-date" style="width: 80px; font-family: var(--mono); font-size: 11px; color: var(--text-muted);">2026-05-01</div>
+            <div>
+            <div class="todo-description" style="font-size: 14px; font-weight: 500; color: var(--text-primary);">Aggiornamento software</div>
+            </div>
+            <span class="badge badge-green">Bassa</span>
+            <button class="todo-delete" style="background: none; border: none; color: var(--red); cursor: pointer; font-size: 12px;">×</button>
+        </div>
+        </div>
+    </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+    <span>Saenco S.r.l. &mdash; Uso interno riservato</span>
+    <span style="display: flex; gap: 1.5rem;">
+        <a href="#">Sviluppato da Riccardo Dinoi</a>
+        <span style="opacity: 0.5;">&copy; <span id="year"></span> Saenco S.r.l.</span>
+    </span>
+    </footer>
+
+    <script src="js/da-fare.js"></script>
+</body>
+</html>

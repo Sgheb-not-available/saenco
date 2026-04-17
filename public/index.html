@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saenco — Portale Interno</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,300&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- TOP BAR -->
+    <div class="topbar">
+    <div class="topbar-left">
+        <span><span class="topbar-dot"></span>Sistema operativo</span>
+    </div>
+    <div class="topbar-right">
+        <span id="clock" style="font-family: var(--mono); font-size: 11px; opacity: 0.8;"></span>
+    </div>
+    </div>
+
+    <!-- HEADER -->
+    <header>
+    <div class="logo">
+        <span class="logo-mark">Saenco</span>
+        <div class="logo-divider"></div>
+        <span class="logo-sub">Portale Interno</span>
+    </div>
+    <nav>
+        <a href="index.html" class="active">Home</a>
+        <a href="da-fare.html">Da fare</a>
+        <a href="software.html">Software</a>
+        <a href="https://sgheb-not-available.github.io/Clienti-Padova/" target="_blank">Clienti</a>
+        <a href="documenti.html">Documenti</a>
+        <a href="calendario.html">Calendario</a>
+    </nav>
+    <div class="header-right">
+        <div class="avatar" title="Profilo utente">Tu</div>
+    </div>
+    </header>
+
+    <!-- HERO -->
+    <div class="hero">
+    <div>
+        <div class="hero-title">Buongiorno,<br><em>Gianfranco</em></div>
+        <div class="hero-subtitle">Dott. Ing. Gianfranco Sasso &mdash; Amministratore</div>
+    </div>
+    <div class="hero-meta">
+        <div class="hero-date" id="hero-date-label">Giovedì, 17 Aprile</div>
+        <div class="hero-date-big" id="hero-date-big">2025</div>
+    </div>
+    </div>
+
+    <!-- MAIN -->
+    <div class="main">
+
+    <!-- METRICHE -->
+    <div class="section-label">Riepilogo operativo</div>
+    <div class="grid-3col" style="margin-bottom: 1.5rem;">
+        <div class="metric-card">
+        <div class="metric-label">Da fare</div>
+        <div class="metric-value">14 <span class="metric-unit">da completare</span></div>
+        </div>
+        <div class="metric-card">
+        <div class="metric-label">Dipendenti attuali</div>
+        <div class="metric-value">3 <span class="metric-unit">dipendenti</span></div>
+        </div>
+        <div class="metric-card">
+        <div class="metric-label">Software attivi</div>
+        <div class="metric-value">1 <span class="metric-unit">software</span></div>
+        </div>
+        </div>
+    </div>
+
+    <!-- 2 COLONNE -->
+    <div class="grid-2col">
+
+        <!-- COLONNA SINISTRA -->
+        <div>
+
+            <!-- COMMESSE IN CORSO -->
+            <div class="card" style="margin-bottom: 1.25rem;">
+                <div class="card-header">
+                <span class="card-title">Da fare</span>
+                <a href="da-fare.html" class="card-action">Tutte →</a>
+                </div>
+                <div class="card-body" style="padding-top: 0; padding-bottom: 0;">
+
+                <div class="project-row">
+                    <div>
+                        <div class="project-name">Titolo</div>
+                        <div class="project-loc">Una breve descrizione del compito</div>
+                    </div>
+                    <div class="progress-wrap"></div>
+                    <span class="badge badge-green">In corso</span>
+                </div>
+
+                <div class="project-row">
+                    <div>
+                        <div class="project-name">Titolo</div>
+                        <div class="project-loc">Una breve descrizione del compito</div>
+                    </div>
+                    <div class="progress-wrap"></div>
+                    <span class="badge badge-blue">In attesa</span>
+                </div>
+
+                <div class="project-row">
+                    <div>
+                        <div class="project-name">Titolo</div>
+                        <div class="project-loc">Una breve descrizione del compito</div>
+                    </div>
+                    <div class="progress-wrap"></div>
+                    <span class="badge badge-amber">Urgente</span>
+                </div>
+
+                <div class="project-row">
+                    <div>
+                        <div class="project-name">Titolo</div>
+                        <div class="project-loc">Una breve descrizione del compito</div>
+                    </div>
+                    <div class="progress-wrap"></div>
+                    <span class="badge badge-red">In ritardo</span>
+                </div>
+
+                </div>
+            </div>
+
+            <!-- ACCESSO RAPIDO -->
+            <div style="margin-bottom: 1.5rem;">
+                <div class="section-label">Accesso rapido</div>
+                <div class="quick-grid">
+                    
+                <div class="quick-item">
+                    <a href="da-fare.html">
+                        <div class="quick-icon" style="background: var(--accent-bg);">
+                        <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="2" y="2" width="5" height="5" rx="1" fill="var(--accent)"/>
+                            <rect x="9" y="2" width="5" height="5" rx="1" fill="var(--accent)"/>
+                            <rect x="2" y="9" width="5" height="5" rx="1" fill="var(--accent)"/>
+                            <rect x="9" y="9" width="5" height="5" rx="1" fill="var(--accent)"/>
+                        </svg>
+                        </div>
+                        <div class="quick-label">Assegna</div>
+                        <div class="quick-desc">Aggiungi un compito alle cose da fare</div>
+                    </a>
+                </div>
+
+                <div class="quick-item">
+                    <a href="documenti.html">
+                        <div class="quick-icon" style="background: var(--blue-bg);">
+                        <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M4 4h8M4 8h6M4 12h4" stroke="var(--blue)" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                        </div>
+                        <div class="quick-label">Archivia documento</div>
+                        <div class="quick-desc">Upload e classificazione</div>
+                    </a>
+                </div>
+
+                <div class="quick-item">
+                    <div class="quick-icon" style="background: var(--accent-warm-bg);">
+                    <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="8" cy="8" r="5.5" stroke="var(--accent-warm)" stroke-width="1.5"/>
+                        <path d="M8 5v3.5l2.5 1.5" stroke="var(--accent-warm)" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                    </div>
+                    <div class="quick-label">Aggiungi dipendente</div>
+                    <div class="quick-desc">Aggiungi un nuovo account dipendente</div>
+                </div>
+
+                <div class="quick-item">
+                    <a href="calendario.html">
+                        <div class="quick-icon" style="background: var(--surface-alt);">
+                        <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="2" y="3" width="12" height="10" rx="1.5" stroke="var(--text-secondary)" stroke-width="1.5"/>
+                            <path d="M2 6.5h12" stroke="var(--text-secondary)" stroke-width="1.5"/>
+                            <path d="M5.5 9h5" stroke="var(--text-secondary)" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                        </div>
+                        <div class="quick-label">Calendario interventi</div>
+                        <div class="quick-desc">Pianifica e visualizza</div>
+                    </a>
+                </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- COLONNA DESTRA -->
+        <div>
+
+            <!-- SCADENZE -->
+            <div class="card">
+                <div class="card-header">
+                <span class="card-title">A breve</span>
+                <a href="calendario.html" class="card-action">Calendario →</a>
+                </div>
+                <div class="card-body" style="padding-top: 0; padding-bottom: 0;">
+
+                <div class="deadline-row">
+                    <div class="deadline-date">
+                    <div class="deadline-day">24</div>
+                    <div class="deadline-mon">Apr</div>
+                    </div>
+                    <div>
+                    <div class="deadline-text">Impegno interno</div>
+                    <div class="deadline-sub">Responsabile: [Nome]</div>
+                    </div>
+                </div>
+
+                <div class="deadline-row">
+                    <div class="deadline-date">
+                    <div class="deadline-day">30</div>
+                    <div class="deadline-mon">Apr</div>
+                    </div>
+                    <div>
+                    <div class="deadline-text">Impegno con cliente</div>
+                    <div class="deadline-sub">Cliente: [Nome]</div>
+                    </div>
+                </div>
+
+                <div class="deadline-row">
+                    <div class="deadline-date" style="background: var(--red-bg);">
+                    <div class="deadline-day" style="color: var(--red);">15</div>
+                    <div class="deadline-mon" style="color: var(--red);">Mag</div>
+                    </div>
+                    <div>
+                    <div class="deadline-text">Rinnovo certificazione</div>
+                    <div class="deadline-sub">Ente certificatore: [Nome]</div>
+                    </div>
+                </div>
+
+                <div class="deadline-row">
+                    <div class="deadline-date">
+                    <div class="deadline-day">20</div>
+                    <div class="deadline-mon">Mag</div>
+                    </div>
+                    <div>
+                    <div class="deadline-text">Riunione</div>
+                    <div class="deadline-sub">Sede: [Luogo] — ore [HH:MM]</div>
+                    </div>
+                </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+    <span>Saenco S.r.l. &mdash; Uso interno riservato</span>
+    <span style="display: flex; gap: 1.5rem;">
+        <a href="#">Sviluppato da Riccardo Dinoi</a>
+        <span style="opacity: 0.5;">&copy; <span id="year"></span> Saenco S.r.l.</span>
+    </span>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
