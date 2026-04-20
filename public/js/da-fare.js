@@ -1,3 +1,9 @@
+function formatDate(dateStr) {
+    return new Date(dateStr).toLocaleDateString('it-IT', {
+        year: 'numeric', month: '2-digit', day: '2-digit'
+    });
+}
+
 function pad(n) { return String(n).padStart(2, '0'); }
 function tick() {
     const now = new Date();
@@ -6,31 +12,19 @@ function tick() {
 }
 tick();
 setInterval(tick, 1000);
-
-// Initialize year
 document.getElementById('year').textContent = new Date().getFullYear();
 
-// Load todos from localStorage
-function loadTodos() {
-    let todos = JSON.parse(localStorage.getItem('saenco-todos') || '[]');
-
-    // Initialize with sample data if empty
-    if (todos.length === 0) {
-        todos = [
-            { date: '2026-04-20', description: 'Completare report mensile', priority: 'alta' },
-            { date: '2026-04-25', description: 'Revisione contratto cliente', priority: 'media' },
-            { date: '2026-05-01', description: 'Aggiornamento software', priority: 'bassa' }
-        ];
-        saveTodos(todos);
-    }
+// Carica todos dal backend
+async function loadTodos() {
+    const todos = await fetch('/api/todos').then(r => r.json());
 
     const todoList = document.getElementById('todo-list');
     todoList.innerHTML = '';
 
-    todos.forEach((todo, index) => {
+    todos.forEach((todo) => {
         const todoItem = document.createElement('div');
         todoItem.className = 'todo-item';
-        todoItem.style.cssText = 'display: grid; grid-template-columns: auto 1fr auto auto; gap: 12px; align-items: center; padding: 0.9rem 0; border-bottom: 1px solid var(--border);';
+        todoItem.style.cssText = 'display: flex; align-items: center; gap: 12px; padding: 0.9rem 0; border-bottom: 1px solid var(--border);';
 
         const priorityClass = {
             'bassa': 'badge-green',
@@ -47,29 +41,31 @@ function loadTodos() {
         }[todo.priority];
 
         todoItem.innerHTML = `
-                    <div class="todo-date" style="width: 80px; font-family: var(--mono); font-size: 11px; color: var(--text-muted);">${todo.date}</div>
-                    <div>
-                    <div class="todo-description" style="font-size: 14px; font-weight: 500; color: var(--text-primary);">${todo.description}</div>
-                    </div>
-                    <span class="badge ${priorityClass}">${priorityLabel}</span>
-                    <button class="todo-delete" style="background: none; border: none; color: var(--red); cursor: pointer; font-size: 12px;" data-index="${index}">×</button>
-                `;
+            <div style="width: 90px; flex-shrink: 0; font-family: var(--mono); font-size: 11px; color: var(--text-muted);">${formatDate(todo.date)}</div>
+            <div style="flex: 1;">
+                <div style="font-size: 14px; font-weight: 500; color: var(--text-primary);">${todo.description}</div>
+            </div>
+            <span class="badge ${priorityClass}">${priorityLabel}</span>
+            <button class="todo-delete" style="background: none; border: none; color: var(--red); cursor: pointer; font-size: 12px;" data-id="${todo.id}">×</button>
+        `;
 
         todoList.appendChild(todoItem);
     });
 
-    // Remove border from last item
     const lastItem = todoList.lastElementChild;
     if (lastItem) lastItem.style.borderBottom = 'none';
+
+    // Elimina todo
+    document.querySelectorAll('.todo-delete').forEach(btn => {
+        btn.addEventListener('click', async () => {
+            await fetch(`/api/todos/${btn.dataset.id}`, { method: 'DELETE' });
+            loadTodos();
+        });
+    });
 }
 
-// Save todos to localStorage
-function saveTodos(todos) {
-    localStorage.setItem('saenco-todos', JSON.stringify(todos));
-}
-
-// Handle form submission
-document.getElementById('todo-form').addEventListener('submit', function(e) {
+// Aggiungi todo
+document.getElementById('todo-form').addEventListener('submit', async function(e) {
     e.preventDefault();
 
     const date = document.getElementById('todo-date').value;
@@ -78,28 +74,14 @@ document.getElementById('todo-form').addEventListener('submit', function(e) {
 
     if (!date || !description) return;
 
-    const todos = JSON.parse(localStorage.getItem('saenco-todos') || '[]');
-    todos.push({ date, description, priority });
-    saveTodos(todos);
+    await fetch('/api/todos', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ date, description, priority })
+    });
 
+    this.reset();
     loadTodos();
-
-    // Clear form
-    document.getElementById('todo-date').value = '';
-    document.getElementById('todo-description').value = '';
-    document.getElementById('todo-priority').value = 'media';
 });
 
-// Handle delete
-document.addEventListener('click', function(e) {
-    if (e.target.classList.contains('todo-delete')) {
-        const index = e.target.dataset.index;
-        const todos = JSON.parse(localStorage.getItem('saenco-todos') || '[]');
-        todos.splice(index, 1);
-        saveTodos(todos);
-        loadTodos();
-    }
-});
-
-// Initialize
 loadTodos();

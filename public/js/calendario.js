@@ -6,45 +6,32 @@ function tick() {
 }
 tick();
 setInterval(tick, 1000);
-
-// Initialize year
 document.getElementById('year').textContent = new Date().getFullYear();
 
-// Calendar state
 let currentDate = new Date();
-let events = JSON.parse(localStorage.getItem('saenco-events') || '[]');
+let events = [];
 
-// Initialize with sample events if empty
-if (events.length === 0) {
-    events = [
-        { id: 1, date: '2026-04-24', title: 'Impegno interno', description: 'Responsabile: [Nome]' },
-        { id: 2, date: '2026-04-30', title: 'Impegno con cliente', description: 'Cliente: [Nome]' },
-        { id: 3, date: '2026-05-15', title: 'Rinnovo certificazione', description: 'Ente certificatore: [Nome]' },
-        { id: 4, date: '2026-05-20', title: 'Riunione', description: 'Sede: [Luogo] — ore [HH:MM]' }
-    ];
-    saveEvents();
+function parseDate(dateStr) {
+    const [year, month, day] = dateStr.split('T')[0].split('-');
+    return new Date(year, month - 1, day);
 }
 
-// Save events to localStorage
-function saveEvents() {
-    localStorage.setItem('saenco-events', JSON.stringify(events));
+async function loadEvents() {
+    events = await fetch('/api/events').then(r => r.json());
+    renderCalendar();
+    renderEventList();
 }
 
-// Render calendar
 function renderCalendar() {
     const calendarGrid = document.getElementById('calendar-grid');
     const currentMonthElement = document.getElementById('current-month');
-
-    // Clear previous calendar
     calendarGrid.innerHTML = '';
 
-    // Month and year display
-    const monthNames = ['Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno',
-        'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'];
+    const monthNames = ['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno',
+        'Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'];
     currentMonthElement.textContent = `${monthNames[currentDate.getMonth()]} ${currentDate.getFullYear()}`;
 
-    // Day headers
-    const dayNames = ['Dom', 'Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab'];
+    const dayNames = ['Dom','Lun','Mar','Mer','Gio','Ven','Sab'];
     dayNames.forEach(day => {
         const dayHeader = document.createElement('div');
         dayHeader.style.cssText = 'text-align: center; padding: 0.5rem; font-family: var(--mono); font-size: 11px; color: var(--text-muted); font-weight: 500;';
@@ -52,141 +39,160 @@ function renderCalendar() {
         calendarGrid.appendChild(dayHeader);
     });
 
-    // Calculate first day of month and last day
     const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
     const lastDay = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
-    const startDate = new Date(firstDay);
-    startDate.setDate(startDate.getDate() - firstDay.getDay());
 
-    // Generate calendar days
-    const totalDays = 42; // 6 weeks
-    for (let i = 0; i < totalDays; i++) {
-        const dayElement = document.createElement('div');
-        const dayDate = new Date(startDate);
-        dayDate.setDate(startDate.getDate() + i);
+    const today = new Date();
+    let d = new Date(firstDay);
+    d.setDate(d.getDate() - firstDay.getDay());
 
-        const isCurrentMonth = dayDate.getMonth() === currentDate.getMonth();
-        const isToday = dayDate.toDateString() === new Date().toDateString();
-        const dayEvents = events.filter(event => event.date === dayDate.toISOString().split('T')[0]);
+    while (d <= lastDay || calendarGrid.children.length % 7 !== 0) {
+        const dayCell = document.createElement('div');
+        const isCurrentMonth = d.getMonth() === currentDate.getMonth();
+        const isToday = d.toDateString() === today.toDateString();
+        const dateStr = `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+        const dayEvents = events.filter(e => e.date.split('T')[0] === dateStr);
+        const hasEvent = dayEvents.length > 0;
 
-        dayElement.style.cssText = `
-                    min-height: 80px;
-                    padding: 0.25rem;
-                    border: 1px solid var(--border);
-                    background: ${isCurrentMonth ? 'var(--surface)' : 'var(--surface-alt)'};
-                    ${isToday ? 'background: var(--accent-bg); border-color: var(--accent);' : ''}
-                    cursor: pointer;
-                    transition: background 0.15s;
+        dayCell.style.cssText = `
+            text-align: center; padding: 0.5rem; border-radius: var(--radius); cursor: pointer;
+            font-size: 13px; position: relative;
+            color: ${isCurrentMonth ? 'var(--text-primary)' : 'var(--text-muted)'};
+            background: ${isToday ? 'var(--accent)' : 'transparent'};
+            font-weight: ${isToday ? '600' : '400'};
+        `;
+        dayCell.textContent = d.getDate();
+
+        if (hasEvent) {
+            const dot = document.createElement('div');
+            dot.style.cssText = 'width: 4px; height: 4px; background: var(--accent); border-radius: 50%; margin: 2px auto 0;';
+            dayCell.appendChild(dot);
+        }
+
+        dayCell.addEventListener('click', () => {
+            const formDate = document.getElementById('event-date');
+            if (formDate) formDate.value = dateStr;
+
+            document.getElementById('day-popup')?.remove();
+
+            if (dayEvents.length > 0) {
+                const popup = document.createElement('div');
+                popup.id = 'day-popup';
+                popup.style.cssText = `
+                    position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+                    background: var(--surface); border: 1px solid var(--border);
+                    border-radius: var(--radius); padding: 1.5rem; z-index: 1000;
+                    min-width: 300px; box-shadow: 0 8px 32px rgba(0,0,0,0.12);
                 `;
 
-        dayElement.innerHTML = `
-                    <div style="font-family: var(--mono); font-size: 12px; font-weight: ${isToday ? '600' : '500'}; color: ${isCurrentMonth ? 'var(--text-primary)' : 'var(--text-muted)'}; margin-bottom: 0.25rem;">
-                        ${dayDate.getDate()}
+                popup.innerHTML = `
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+                        <div style="font-family:var(--mono); font-size:12px; color:var(--text-muted);">${dateStr}</div>
+                        <button id="close-popup" style="background:none;border:none;cursor:pointer;color:var(--text-muted);font-size:18px;">×</button>
                     </div>
-                    ${dayEvents.map(event => `<div style="font-size: 10px; background: var(--accent-bg); color: var(--accent); padding: 1px 3px; border-radius: 2px; margin-bottom: 1px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${event.title}</div>`).join('')}
+                    ${dayEvents.map(e => `
+                        <div style="padding: 0.75rem 0; border-bottom: 1px solid var(--border);">
+                            <div style="font-size:14px; font-weight:600; color:var(--text-primary);">${e.title}</div>
+                            <div style="font-size:12px; color:var(--text-muted); margin-top:4px;">${e.description || ''}</div>
+                        </div>
+                    `).join('')}
+                    <div style="margin-top:1rem;">
+                        <button id="add-to-day" style="font-size:12px; color:var(--accent); background:none; border:none; cursor:pointer;">+ Aggiungi evento in questo giorno</button>
+                    </div>
                 `;
 
-        dayElement.addEventListener('click', () => showDayEvents(dayDate, dayEvents));
-        calendarGrid.appendChild(dayElement);
+                document.body.appendChild(popup);
+
+                document.getElementById('close-popup').addEventListener('click', () => popup.remove());
+                document.getElementById('add-to-day').addEventListener('click', () => {
+                    popup.remove();
+                    document.getElementById('event-form')?.scrollIntoView({ behavior: 'smooth' });
+                    document.getElementById('event-title')?.focus();
+                });
+
+                setTimeout(() => {
+                    document.addEventListener('click', function handler(ev) {
+                        if (!popup.contains(ev.target)) {
+                            popup.remove();
+                            document.removeEventListener('click', handler);
+                        }
+                    });
+                }, 100);
+
+            } else {
+                document.getElementById('event-form')?.scrollIntoView({ behavior: 'smooth' });
+                document.getElementById('event-title')?.focus();
+            }
+        });
+
+        calendarGrid.appendChild(dayCell);
+        d.setDate(d.getDate() + 1);
     }
 }
 
-// Show events for a specific day
-function showDayEvents(date, dayEvents) {
-    if (dayEvents.length === 0) {
-        // Allow adding event for this day
-        document.getElementById('event-date').value = date.toISOString().split('T')[0];
-        document.getElementById('event-title').focus();
+function renderEventList() {
+    const eventList = document.getElementById('event-list');
+    if (!eventList) return;
+    eventList.innerHTML = '';
+
+    const today = new Date();
+    const upcoming = events
+        .filter(e => parseDate(e.date) >= today)
+        .sort((a, b) => parseDate(a.date) - parseDate(b.date));
+
+    if (upcoming.length === 0) {
+        eventList.innerHTML = '<div style="color: var(--text-muted); font-size: 13px;">Nessun evento in programma</div>';
         return;
     }
 
-    const modal = document.getElementById('event-modal');
-    const modalTitle = document.getElementById('modal-title');
-    const modalContent = document.getElementById('modal-content');
-
-    modalTitle.textContent = `Eventi del ${date.toLocaleDateString('it-IT')}`;
-
-    modalContent.innerHTML = dayEvents.map(event => `
-                <div style="margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border);">
-                    <h4 style="margin: 0 0 0.5rem 0; color: var(--text-primary);">${event.title}</h4>
-                    <p style="margin: 0; color: var(--text-secondary);">${event.description || 'Nessuna descrizione'}</p>
-                </div>
-            `).join('');
-
-    modal.style.display = 'flex';
-
-    // Store current date for edit/delete
-    modal.dataset.date = date.toISOString().split('T')[0];
-    modal.dataset.events = JSON.stringify(dayEvents);
+    upcoming.forEach(event => {
+        const d = parseDate(event.date);
+        const item = document.createElement('div');
+        item.style.cssText = 'display: flex; align-items: center; gap: 12px; padding: 0.9rem 0; border-bottom: 1px solid var(--border);';
+        item.innerHTML = `
+            <div style="width: 44px; flex-shrink: 0; background: var(--surface-alt); border-radius: var(--radius); text-align: center; padding: 4px;">
+                <div style="font-size: 16px; font-weight: 700; color: var(--text-primary);">${d.getDate()}</div>
+                <div style="font-size: 10px; color: var(--text-muted);">${d.toLocaleDateString('it-IT', { month: 'short' })}</div>
+            </div>
+            <div style="flex: 1;">
+                <div style="font-size: 14px; font-weight: 500; color: var(--text-primary);">${event.title}</div>
+                <div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">${event.description || ''}</div>
+            </div>
+            <button style="background: none; border: none; color: var(--red); cursor: pointer; font-size: 12px;" data-id="${event.id}">×</button>
+        `;
+        item.querySelector('button').addEventListener('click', async () => {
+            await fetch(`/api/events/${event.id}`, { method: 'DELETE' });
+            loadEvents();
+        });
+        eventList.appendChild(item);
+    });
 }
 
-// Handle form submission
-document.getElementById('event-form').addEventListener('submit', function(e) {
-    e.preventDefault();
+document.getElementById('prev-month')?.addEventListener('click', () => {
+    currentDate.setMonth(currentDate.getMonth() - 1);
+    renderCalendar();
+});
+document.getElementById('next-month')?.addEventListener('click', () => {
+    currentDate.setMonth(currentDate.getMonth() + 1);
+    renderCalendar();
+});
 
+document.getElementById('event-form')?.addEventListener('submit', async function(e) {
+    e.preventDefault();
     const date = document.getElementById('event-date').value;
     const title = document.getElementById('event-title').value;
     const description = document.getElementById('event-description').value;
 
     if (!date || !title) return;
 
-    const newEvent = {
-        id: Date.now(),
-        date,
-        title,
-        description
-    };
+    await fetch('/api/events', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ date, title, description })
+    });
 
-    events.push(newEvent);
-    saveEvents();
-    renderCalendar();
-
-    // Clear form
-    document.getElementById('event-date').value = '';
-    document.getElementById('event-title').value = '';
-    document.getElementById('event-description').value = '';
+    this.reset();
+    loadEvents();
 });
 
-// Navigation
-document.getElementById('prev-month').addEventListener('click', () => {
-    currentDate.setMonth(currentDate.getMonth() - 1);
-    renderCalendar();
-});
-
-document.getElementById('next-month').addEventListener('click', () => {
-    currentDate.setMonth(currentDate.getMonth() + 1);
-    renderCalendar();
-});
-
-// Modal controls
-document.getElementById('close-modal').addEventListener('click', () => {
-    document.getElementById('event-modal').style.display = 'none';
-});
-
-document.getElementById('event-modal').addEventListener('click', (e) => {
-    if (e.target === document.getElementById('event-modal')) {
-        document.getElementById('event-modal').style.display = 'none';
-    }
-});
-
-// Delete event
-document.getElementById('delete-event').addEventListener('click', () => {
-    const modal = document.getElementById('event-modal');
-    const date = modal.dataset.date;
-    const dayEvents = JSON.parse(modal.dataset.events || '[]');
-
-    if (dayEvents.length === 1) {
-        // Remove the single event
-        events = events.filter(event => event.id !== dayEvents[0].id);
-    } else {
-        // For multiple events, remove the first one (could be improved with selection)
-        events = events.filter(event => event.id !== dayEvents[0].id);
-    }
-
-    saveEvents();
-    renderCalendar();
-    modal.style.display = 'none';
-});
-
-// Initialize calendar
-renderCalendar();
+loadEvents();
