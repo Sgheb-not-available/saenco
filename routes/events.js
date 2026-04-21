@@ -1,23 +1,25 @@
 const router = require('express').Router();
 const db = require('../db');
 
-router.get('/', async (req, res) => {
+router.post('/', async (req, res) => {
   try {
-    const { rows } = await db.query('SELECT * FROM events ORDER BY date ASC');
-    res.json(rows);
+    const { date, title, description } = req.body;
+    const { rows } = await db.query(
+      'INSERT INTO events (date, title, description) VALUES ($1::date, $2, $3) RETURNING id, title, description, to_char(date, \'YYYY-MM-DD\') as date',
+      [date, title, description]
+    );
+    res.json(rows[0]);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-router.post('/', async (req, res) => {
+router.get('/', async (req, res) => {
   try {
-    const { date, title, description } = req.body;
     const { rows } = await db.query(
-      'INSERT INTO events (date, title, description) VALUES ($1, $2, $3) RETURNING *',
-      [date, title, description]
+      'SELECT id, title, description, to_char(date, \'YYYY-MM-DD\') as date FROM events ORDER BY date ASC'
     );
-    res.json(rows[0]);
+    res.json(rows);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

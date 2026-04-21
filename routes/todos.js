@@ -1,10 +1,11 @@
 const router = require('express').Router();
 const db = require('../db');
 
-// Leggi tutti i todos
 router.get('/', async (req, res) => {
   try {
-    const { rows } = await db.query('SELECT * FROM todos ORDER BY date ASC');
+    const { rows } = await db.query(
+      'SELECT id, description, priority, to_char(date, \'YYYY-MM-DD\') as date FROM todos ORDER BY date ASC'
+    );
     res.json(rows);
   } catch (err) {
     res.status(500).json({ error: err.message });

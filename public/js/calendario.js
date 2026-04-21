@@ -91,9 +91,12 @@ function renderCalendar() {
                         <button id="close-popup" style="background:none;border:none;cursor:pointer;color:var(--text-muted);font-size:18px;">×</button>
                     </div>
                     ${dayEvents.map(e => `
-                        <div style="padding: 0.75rem 0; border-bottom: 1px solid var(--border);">
-                            <div style="font-size:14px; font-weight:600; color:var(--text-primary);">${e.title}</div>
-                            <div style="font-size:12px; color:var(--text-muted); margin-top:4px;">${e.description || ''}</div>
+                        <div style="display:flex; justify-content:space-between; align-items:start; padding: 0.75rem 0; border-bottom: 1px solid var(--border);">
+                            <div>
+                                <div style="font-size:14px; font-weight:600; color:var(--text-primary);">${e.title}</div>
+                                <div style="font-size:12px; color:var(--text-muted); margin-top:4px;">${e.description || ''}</div>
+                            </div>
+                            <button class="delete-event-btn" data-id="${e.id}" style="background:none;border:none;color:var(--red);cursor:pointer;font-size:14px;flex-shrink:0;margin-left:12px;">×</button>
                         </div>
                     `).join('')}
                     <div style="margin-top:1rem;">
@@ -103,6 +106,14 @@ function renderCalendar() {
 
                 document.body.appendChild(popup);
 
+                // Delete dal popup
+                popup.querySelectorAll('.delete-event-btn').forEach(btn => {
+                    btn.addEventListener('click', async () => {
+                        await fetch(`/api/events/${btn.dataset.id}`, { method: 'DELETE' });
+                        popup.remove();
+                        loadEvents();
+                    });
+                });
                 document.getElementById('close-popup').addEventListener('click', () => popup.remove());
                 document.getElementById('add-to-day').addEventListener('click', () => {
                     popup.remove();

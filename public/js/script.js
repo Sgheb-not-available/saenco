@@ -19,15 +19,15 @@ document.getElementById('year').textContent = now.getFullYear();
 async function syncMetrics() {
     const todos = await fetch('/api/todos').then(r => r.json());
     const events = await fetch('/api/events').then(r => r.json());
+    const documents = await fetch('/api/documents').then(r => r.json());
 
-    const todoMetric = document.querySelector('.metric-card .metric-value');
-    if (todoMetric) {
-        todoMetric.innerHTML = `${todos.length} <span class="metric-unit">da completare</span>`;
-    }
+    const metrics = document.querySelectorAll('.metric-card .metric-value');
+
+    if (metrics[0]) metrics[0].innerHTML = `${todos.length} <span class="metric-unit">da completare</span>`;
+    if (metrics[1]) metrics[1].innerHTML = `${documents.length} <span class="metric-unit">documenti</span>`;
 
     syncTodoList(todos);
     syncUpcomingEvents(events);
-    syncAlertsBar(events);
 }
 
 function syncTodoList(todos) {
