@@ -11,4 +11,4 @@ app.use('/api/todos',     require('./routes/todos'));
 app.use('/api/events',    require('./routes/events'));
 app.use('/api/documents', require('./routes/documents'));
 
-app.listen(3000, () => console.log('Server avviato → http://localhost:3000'));
+app.listen(3000, () => console.log('Server avviato → http://192.168.1.11:3000'));
